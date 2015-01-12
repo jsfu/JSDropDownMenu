@@ -14,6 +14,7 @@
 		D0EED88E1A63CBC700EE7AFD /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D0EED88D1A63CBC700EE7AFD /* Images.xcassets */; };
 		D0EED8911A63CBC700EE7AFD /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = D0EED88F1A63CBC700EE7AFD /* LaunchScreen.xib */; };
 		D0EED89D1A63CBC700EE7AFD /* JSDropDownMenuDemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D0EED89C1A63CBC700EE7AFD /* JSDropDownMenuDemoTests.m */; };
+		D0EED8A91A63CCB300EE7AFD /* JSDropDownMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = D0EED8A81A63CCB300EE7AFD /* JSDropDownMenu.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,6 +41,8 @@
 		D0EED8961A63CBC700EE7AFD /* JSDropDownMenuDemoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = JSDropDownMenuDemoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D0EED89B1A63CBC700EE7AFD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D0EED89C1A63CBC700EE7AFD /* JSDropDownMenuDemoTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JSDropDownMenuDemoTests.m; sourceTree = "<group>"; };
+		D0EED8A71A63CCB300EE7AFD /* JSDropDownMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSDropDownMenu.h; sourceTree = "<group>"; };
+		D0EED8A81A63CCB300EE7AFD /* JSDropDownMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSDropDownMenu.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,6 +84,7 @@
 		D0EED87F1A63CBC700EE7AFD /* JSDropDownMenuDemo */ = {
 			isa = PBXGroup;
 			children = (
+				D0EED8A61A63CCB300EE7AFD /* JSDropDownMenu */,
 				D0EED8841A63CBC700EE7AFD /* AppDelegate.h */,
 				D0EED8851A63CBC700EE7AFD /* AppDelegate.m */,
 				D0EED8871A63CBC700EE7AFD /* ViewController.h */,
@@ -117,6 +121,16 @@
 				D0EED89B1A63CBC700EE7AFD /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		D0EED8A61A63CCB300EE7AFD /* JSDropDownMenu */ = {
+			isa = PBXGroup;
+			children = (
+				D0EED8A71A63CCB300EE7AFD /* JSDropDownMenu.h */,
+				D0EED8A81A63CCB300EE7AFD /* JSDropDownMenu.m */,
+			);
+			name = JSDropDownMenu;
+			path = ../../JSDropDownMenu;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -221,6 +235,7 @@
 			files = (
 				D0EED8891A63CBC700EE7AFD /* ViewController.m in Sources */,
 				D0EED8861A63CBC700EE7AFD /* AppDelegate.m in Sources */,
+				D0EED8A91A63CCB300EE7AFD /* JSDropDownMenu.m in Sources */,
 				D0EED8831A63CBC700EE7AFD /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
