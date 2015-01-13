@@ -1,9 +1,9 @@
 //
 //  JSDropDownMenu.h
-//  hillbuy
+//  JSDropDownMenu
 //
-//  Created by Jsfu on 14-11-3.
-//  Copyright (c) 2014年 Hillsun Cloud Commerce Technology Co. Ltd. All rights reserved.
+//  Created by Jsfu on 15-1-12.
+//  Copyright (c) 2015年 jsfu. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>

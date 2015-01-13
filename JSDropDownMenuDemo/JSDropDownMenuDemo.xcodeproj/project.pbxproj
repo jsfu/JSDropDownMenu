@@ -15,6 +15,7 @@
 		D0EED8911A63CBC700EE7AFD /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = D0EED88F1A63CBC700EE7AFD /* LaunchScreen.xib */; };
 		D0EED89D1A63CBC700EE7AFD /* JSDropDownMenuDemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D0EED89C1A63CBC700EE7AFD /* JSDropDownMenuDemoTests.m */; };
 		D0EED8A91A63CCB300EE7AFD /* JSDropDownMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = D0EED8A81A63CCB300EE7AFD /* JSDropDownMenu.m */; };
+		D0EED8AD1A64CAF300EE7AFD /* ico_make.png in Resources */ = {isa = PBXBuildFile; fileRef = D0EED8AC1A64CAF300EE7AFD /* ico_make.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -43,6 +44,7 @@
 		D0EED89C1A63CBC700EE7AFD /* JSDropDownMenuDemoTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JSDropDownMenuDemoTests.m; sourceTree = "<group>"; };
 		D0EED8A71A63CCB300EE7AFD /* JSDropDownMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JSDropDownMenu.h; sourceTree = "<group>"; };
 		D0EED8A81A63CCB300EE7AFD /* JSDropDownMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSDropDownMenu.m; sourceTree = "<group>"; };
+		D0EED8AC1A64CAF300EE7AFD /* ico_make.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ico_make.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -126,6 +128,7 @@
 		D0EED8A61A63CCB300EE7AFD /* JSDropDownMenu */ = {
 			isa = PBXGroup;
 			children = (
+				D0EED8AC1A64CAF300EE7AFD /* ico_make.png */,
 				D0EED8A71A63CCB300EE7AFD /* JSDropDownMenu.h */,
 				D0EED8A81A63CCB300EE7AFD /* JSDropDownMenu.m */,
 			);
@@ -178,7 +181,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0610;
-				ORGANIZATIONNAME = xdsys;
+				ORGANIZATIONNAME = jsfu;
 				TargetAttributes = {
 					D0EED87C1A63CBC700EE7AFD = {
 						CreatedOnToolsVersion = 6.1;
@@ -216,6 +219,7 @@
 				D0EED88C1A63CBC700EE7AFD /* Main.storyboard in Resources */,
 				D0EED8911A63CBC700EE7AFD /* LaunchScreen.xib in Resources */,
 				D0EED88E1A63CBC700EE7AFD /* Images.xcassets in Resources */,
+				D0EED8AD1A64CAF300EE7AFD /* ico_make.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

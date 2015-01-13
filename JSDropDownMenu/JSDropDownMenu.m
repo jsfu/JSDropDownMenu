@@ -1,17 +1,50 @@
 //
 //  JSDropDownMenu.m
-//  hillbuy
+//  JSDropDownMenu
 //
-//  Created by Jsfu on 14-11-3.
-//  Copyright (c) 2014年 Hillsun Cloud Commerce Technology Co. Ltd. All rights reserved.
+//  Created by Jsfu on 15-1-12.
+//  Copyright (c) 2015年 jsfu. All rights reserved.
 //
 
 #import "JSDropDownMenu.h"
-#import "NSString+Size.h"
 
 #define BackColor [UIColor colorWithRed:244.0f/255.0f green:244.0f/255.0f blue:244.0f/255.0f alpha:1.0]
 // 选中颜色加深
 #define SelectColor [UIColor colorWithRed:238.0f/255.0f green:238.0f/255.0f blue:238.0f/255.0f alpha:1.0]
+
+@interface NSString (Size)
+
+- (CGSize)textSizeWithFont:(UIFont *)font constrainedToSize:(CGSize)size lineBreakMode:(NSLineBreakMode)lineBreakMode;
+
+@end
+
+@implementation NSString (Size)
+
+- (CGSize)textSizeWithFont:(UIFont *)font constrainedToSize:(CGSize)size lineBreakMode:(NSLineBreakMode)lineBreakMode
+{
+    CGSize textSize;
+    if (CGSizeEqualToSize(size, CGSizeZero))
+    {
+        NSDictionary *attributes = [NSDictionary dictionaryWithObject:font forKey:NSFontAttributeName];
+        
+        textSize = [self sizeWithAttributes:attributes];
+    }
+    else
+    {
+        NSStringDrawingOptions option = NSStringDrawingTruncatesLastVisibleLine | NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading;
+        //NSStringDrawingTruncatesLastVisibleLine如果文本内容超出指定的矩形限制，文本将被截去并在最后一个字符后加上省略号。 如果指定了NSStringDrawingUsesLineFragmentOrigin选项，则该选项被忽略 NSStringDrawingUsesFontLeading计算行高时使用行间距。（字体大小+行间距=行高）
+        NSDictionary *attributes = [NSDictionary dictionaryWithObject:font forKey:NSFontAttributeName];
+        CGRect rect = [self boundingRectWithSize:size
+                                         options:option
+                                      attributes:attributes
+                                         context:nil];
+        
+        textSize = rect.size;
+    }
+    return textSize;
+}
+
+@end
 
 @interface JSCollectionViewCell:UICollectionViewCell
 
@@ -463,6 +496,16 @@
             
             _currentSelectedMenudIndex = tapIndex;
             
+            if ([_dataSource respondsToSelector:@selector(currentLeftSelectedRow:)]) {
+                
+                _leftSelectedRow = [_dataSource currentLeftSelectedRow:_currentSelectedMenudIndex];
+            }
+            
+            if (rightTableView) {
+                [rightTableView reloadData];
+            }
+            [_leftTableView reloadData];
+            
             CGFloat ratio = [_dataSource widthRatioOfLeftColumn:_currentSelectedMenudIndex];
             if (_leftTableView) {
                 
@@ -473,17 +516,6 @@
                 
                 _rightTableView.frame = CGRectMake(_origin.x+_leftTableView.frame.size.width, self.frame.origin.y + self.frame.size.height, self.frame.size.width*(1-ratio), 0);
             }
-            
-            if ([_dataSource respondsToSelector:@selector(currentLeftSelectedRow:)]) {
-                
-                _leftSelectedRow = [_dataSource currentLeftSelectedRow:_currentSelectedMenudIndex];
-            }
-            
-            
-            if (rightTableView) {
-                [rightTableView reloadData];
-            }
-            [_leftTableView reloadData];
             
             if (_currentSelectedMenudIndex!=-1) {
                 // 需要隐藏collectionview
@@ -594,7 +626,7 @@
             
             [self.superview addSubview:rightTableView];
             
-            rightTableViewHeight = ([leftTableView numberOfRowsInSection:0] > 5) ? (5 * leftTableView.rowHeight) : ([leftTableView numberOfRowsInSection:0] * leftTableView.rowHeight);
+            rightTableViewHeight = ([rightTableView numberOfRowsInSection:0] > 5) ? (5 * rightTableView.rowHeight) : ([rightTableView numberOfRowsInSection:0] * rightTableView.rowHeight);
         }
         
         CGFloat tableViewHeight = MAX(leftTableViewHeight, rightTableViewHeight);
