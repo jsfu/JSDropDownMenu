@@ -18,6 +18,9 @@
     NSInteger _currentData1Index;
     NSInteger _currentData2Index;
     NSInteger _currentData3Index;
+    
+    NSInteger _currentData1SelectedIndex;
+    JSDropDownMenu *menu;
 }
 
 @end
@@ -28,6 +31,10 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
+    // 指定默认选中
+    _currentData1Index = 1;
+    _currentData1SelectedIndex = 1;
+    
     NSArray *food = @[@"全部美食", @"火锅", @"川菜", @"西餐", @"自助餐"];
     NSArray *travel = @[@"全部旅游", @"周边游", @"景点门票", @"国内游", @"境外游"];
     
@@ -35,7 +42,7 @@
     _data2 = [NSMutableArray arrayWithObjects:@"智能排序", @"离我最近", @"评价最高", @"最新发布", @"人气最高", @"价格最低", @"价格最高", nil];
     _data3 = [NSMutableArray arrayWithObjects:@"不限人数", @"单人餐", @"双人餐", @"3~4人餐", nil];
     
-    JSDropDownMenu *menu = [[JSDropDownMenu alloc] initWithOrigin:CGPointMake(0, 20) andHeight:45];
+    menu = [[JSDropDownMenu alloc] initWithOrigin:CGPointMake(0, 20) andHeight:45];
     menu.indicatorColor = [UIColor colorWithRed:175.0f/255.0f green:175.0f/255.0f blue:175.0f/255.0f alpha:1.0];
     menu.separatorColor = [UIColor colorWithRed:210.0f/255.0f green:210.0f/255.0f blue:210.0f/255.0f alpha:1.0];
     menu.textColor = [UIColor colorWithRed:83.f/255.0f green:83.f/255.0f blue:83.f/255.0f alpha:1.0f];
@@ -118,11 +125,11 @@
 - (NSString *)menu:(JSDropDownMenu *)menu titleForColumn:(NSInteger)column{
     
     switch (column) {
-        case 0: return [[_data1[0] objectForKey:@"data"] objectAtIndex:0];
+        case 0: return [[_data1[_currentData1Index] objectForKey:@"data"] objectAtIndex:_currentData1SelectedIndex];
             break;
-        case 1: return _data2[0];
+        case 1: return _data2[_currentData2Index];
             break;
-        case 2: return _data3[0];
+        case 2: return _data3[_currentData3Index];
             break;
         default:
             return nil;

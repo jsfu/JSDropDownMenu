@@ -739,7 +739,7 @@
 
 #pragma mark - table datasource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    
+    // 0 左边   1 右边
     NSInteger leftOrRight = 0;
     if (_rightTableView==tableView) {
         leftOrRight = 1;
