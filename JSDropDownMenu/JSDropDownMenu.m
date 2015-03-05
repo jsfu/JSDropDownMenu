@@ -676,7 +676,9 @@
             collectionView.frame = CGRectMake(_origin.x, self.frame.origin.y + self.frame.size.height, self.frame.size.width, 0);
             [self.superview addSubview:collectionView];
             
-            collectionViewHeight = ([collectionView numberOfItemsInSection:0] > 10) ? (5 * 38) : (ceil([collectionView numberOfItemsInSection:0]/2) * 38);
+//            collectionViewHeight = ([collectionView numberOfItemsInSection:0] > 10) ? (5 * 38) : (ceil([collectionView numberOfItemsInSection:0]/2) * 38);
+            // fix if collectionView numberOfItemsInSection > 10 or numberOfItemsInSection / 2 != 0
+            collectionViewHeight =ceil((CGFloat)[collectionView numberOfItemsInSection:0]/2.0) * 38;
         }
         
         [UIView animateWithDuration:0.2 animations:^{
