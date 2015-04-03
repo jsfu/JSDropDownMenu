@@ -49,7 +49,7 @@
 @interface JSCollectionViewCell:UICollectionViewCell
 
 @property(nonatomic,strong) UILabel *textLabel;
-@property(nonatomic,strong) UIImageView *accessoryView;
+@property(nonatomic,strong) UIView *accessoryView;
 
 -(void)removeAccessoryView;
 
@@ -180,6 +180,10 @@
 @property (nonatomic, strong) UITableView *leftTableView;
 @property (nonatomic, strong) UITableView *rightTableView;
 @property (nonatomic, strong) UICollectionView *collectionView;
+
+// 出现在table顶端分割栏
+@property (nonatomic, strong) UIView* topShadow;
+
 //data source
 @property (nonatomic, copy) NSArray *array;
 //layers array
@@ -268,6 +272,12 @@
     
     _bottomShadow.backgroundColor = self.separatorColor;
     
+    CALayer *bottomLayer = [CALayer layer];
+    bottomLayer.frame = CGRectMake(0, _topShadow.frame.size.height - 0.5, _topShadow.frame.size.width, 0.5f);
+    bottomLayer.backgroundColor = [self.separatorColor CGColor];
+    [_topShadow.layer addSublayer:bottomLayer];
+    [_topShadow.layer addSublayer:[self createTopShadowSeparatorLineWithColor:self.separatorColor andPosition:CGPointMake(_topShadow.frame.size.width / 2, _topShadow.frame.size.height / 2)]];
+    
     _titles = [tempTitles copy];
     _indicators = [tempIndicators copy];
     _bgLayers = [tempBgLayers copy];
@@ -285,27 +295,30 @@
         _hadSelected = NO;
         
         //tableView init
-        _leftTableView = [[UITableView alloc] initWithFrame:CGRectMake(origin.x, self.frame.origin.y + self.frame.size.height, 0, 0) style:UITableViewStyleGrouped];
+        //fix:
+        _leftTableView = [[UITableView alloc] initWithFrame:CGRectMake(origin.x, origin.y, 0, 0) style:UITableViewStyleGrouped];
         _leftTableView.rowHeight = 38;
+        _leftTableView.backgroundColor = [UIColor whiteColor];
         _leftTableView.separatorColor = [UIColor colorWithRed:220.f/255.0f green:220.f/255.0f blue:220.f/255.0f alpha:1.0];
         _leftTableView.dataSource = self;
         _leftTableView.delegate = self;
         
-        _rightTableView = [[UITableView alloc] initWithFrame:CGRectMake(self.frame.size.width, self.frame.origin.y + self.frame.size.height, 0, 0) style:UITableViewStyleGrouped];
+        //fix:
+        _rightTableView = [[UITableView alloc] initWithFrame:CGRectMake(self.frame.size.width, origin.y, 0, 0) style:UITableViewStyleGrouped];
         _rightTableView.rowHeight = 38;
+        _rightTableView.backgroundColor = BackColor;
         _rightTableView.separatorColor = [UIColor colorWithRed:220.f/255.0f green:220.f/255.0f blue:220.f/255.0f alpha:1.0];
         _rightTableView.dataSource = self;
         _rightTableView.delegate = self;
         
         UICollectionViewFlowLayout *flowLayout=[[UICollectionViewFlowLayout alloc] init];
         flowLayout.minimumInteritemSpacing = 0;
-        _collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(origin.x, self.frame.origin.y + self.frame.size.height, self.frame.size.width, 0) collectionViewLayout:flowLayout];
+        _collectionView = [[UICollectionView alloc] initWithFrame:CGRectMake(origin.x, origin.y, self.frame.size.width, 0) collectionViewLayout:flowLayout];
         
         [_collectionView registerClass:[JSCollectionViewCell class] forCellWithReuseIdentifier:@"CollectionCell"];
         _collectionView.backgroundColor = [UIColor colorWithRed:220.f/255.0f green:220.f/255.0f blue:220.f/255.0f alpha:1.0];
         _collectionView.dataSource = self;
         _collectionView.delegate = self;
-        
         
         self.autoresizesSubviews = NO;
         _leftTableView.autoresizesSubviews = NO;
@@ -325,8 +338,12 @@
         [_backGroundView addGestureRecognizer:gesture];
         
         //add bottom shadow
-        _bottomShadow = [[UIView alloc] initWithFrame:CGRectMake(0, self.frame.size.height-0.5, screenSize.width, 0.5)];
+        _bottomShadow = [[UIView alloc] initWithFrame:CGRectMake(0, -0.5, screenSize.width, 0.5)];
         [self addSubview:_bottomShadow];
+        
+        //add top shadow
+        _topShadow = [[UIView alloc] initWithFrame:CGRectMake(origin.x, origin.y, screenSize.width, 15)];
+        _topShadow.backgroundColor = [UIColor whiteColor];
     }
     return self;
 }
@@ -346,9 +363,9 @@
     CAShapeLayer *layer = [CAShapeLayer new];
     
     UIBezierPath *path = [UIBezierPath new];
-    [path moveToPoint:CGPointMake(0, 0)];
-    [path addLineToPoint:CGPointMake(8, 0)];
-    [path addLineToPoint:CGPointMake(4, 5)];
+    [path moveToPoint:CGPointMake(0, 5)];
+    [path addLineToPoint:CGPointMake(8, 5)];
+    [path addLineToPoint:CGPointMake(4, 0)];
     [path closePath];
     
     layer.path = path.CGPath;
@@ -362,6 +379,28 @@
     
     layer.position = point;
     
+    return layer;
+}
+
+- (CAShapeLayer *)createTopShadowSeparatorLineWithColor:(UIColor *)color andPosition:(CGPoint)point {
+    CAShapeLayer *layer = [CAShapeLayer new];
+    
+    UIBezierPath *path = [UIBezierPath new];
+    [path moveToPoint:CGPointMake(-20, 1)];
+    [path addLineToPoint:CGPointMake(20, 1)];
+    [path moveToPoint:CGPointMake(-20, 4)];
+    [path addLineToPoint:CGPointMake(20, 4)];
+    
+    layer.path = path.CGPath;
+    layer.lineWidth = 1.0;
+    layer.strokeColor = color.CGColor;
+    
+    CGPathRef bound = CGPathCreateCopyByStrokingPath(layer.path, nil, layer.lineWidth, kCGLineCapButt, kCGLineJoinMiter, layer.miterLimit);
+    layer.bounds = CGPathGetBoundingBox(bound);
+    
+    CGPathRelease(bound);
+    
+    layer.position = point;
     return layer;
 }
 
@@ -479,14 +518,15 @@
         if (haveRightTableView) {
             rightTableView = _rightTableView;
             // 修改左右tableview显示比例
-            
         }
         
         if (tapIndex == _currentSelectedMenudIndex && _show) {
             
+            // 关闭
             [self animateIdicator:_indicators[_currentSelectedMenudIndex] background:_backGroundView leftTableView:_leftTableView rightTableView:_rightTableView title:_titles[_currentSelectedMenudIndex] forward:NO complecte:^{
                 _currentSelectedMenudIndex = tapIndex;
                 _show = NO;
+                
             }];
             
             [(CALayer *)self.bgLayers[tapIndex] setBackgroundColor:BackColor.CGColor];
@@ -506,29 +546,20 @@
             }
             [_leftTableView reloadData];
             
-            CGFloat ratio = [_dataSource widthRatioOfLeftColumn:_currentSelectedMenudIndex];
-            if (_leftTableView) {
-                
-                _leftTableView.frame = CGRectMake(_leftTableView.frame.origin.x, self.frame.origin.y + self.frame.size.height, self.frame.size.width*ratio, 0);
-            }
-            
-            if (_rightTableView) {
-                
-                _rightTableView.frame = CGRectMake(_origin.x+_leftTableView.frame.size.width, self.frame.origin.y + self.frame.size.height, self.frame.size.width*(1-ratio), 0);
-            }
-            
             if (_currentSelectedMenudIndex!=-1) {
                 // 需要隐藏collectionview
                 [self animateCollectionView:_collectionView show:NO complete:^{
                     
-                    [self animateIdicator:_indicators[tapIndex] background:_backGroundView leftTableView:_leftTableView rightTableView:_rightTableView title:_titles[tapIndex] forward:YES complecte:^{
+                    [self animateIdicator:_indicators[tapIndex] background:_backGroundView leftTableView:_leftTableView rightTableView:rightTableView title:_titles[tapIndex] forward:YES complecte:^{
                         _show = YES;
+                        
                     }];
                 }];
                 
             } else{
-                [self animateIdicator:_indicators[tapIndex] background:_backGroundView leftTableView:_leftTableView rightTableView:_rightTableView title:_titles[tapIndex] forward:YES complecte:^{
+                [self animateIdicator:_indicators[tapIndex] background:_backGroundView leftTableView:_leftTableView rightTableView:rightTableView title:_titles[tapIndex] forward:YES complecte:^{
                     _show = YES;
+                    
                 }];
             }
             [(CALayer *)self.bgLayers[tapIndex] setBackgroundColor:SelectColor.CGColor];
@@ -582,6 +613,11 @@
 
 - (void)animateBackGroundView:(UIView *)view show:(BOOL)show complete:(void(^)())complete {
     if (show) {
+        CGRect mainFrame = [[UIScreen mainScreen] bounds];
+        CGRect viewFrame = view.frame;
+        viewFrame.origin.y = self.frame.origin.y - mainFrame.size.height + self.frame.size.height;
+        view.frame = viewFrame;
+        
         [self.superview addSubview:view];
         [view.superview addSubview:self];
         
@@ -606,60 +642,90 @@
     CGFloat ratio = [_dataSource widthRatioOfLeftColumn:_currentSelectedMenudIndex];
     
     if (show) {
+        //fix:
+        CGRect selfFrame = self.frame;
+        
         
         CGFloat leftTableViewHeight = 0;
+        CGFloat leftTableViewY = self.frame.origin.y;
         
         CGFloat rightTableViewHeight = 0;
+        CGFloat rightTableViewY = self.frame.origin.y;
+        
         
         if (leftTableView) {
-            
-            leftTableView.frame = CGRectMake(_origin.x, self.frame.origin.y + self.frame.size.height, self.frame.size.width*ratio, 0);
-            [self.superview addSubview:leftTableView];
-            
-            leftTableViewHeight = ([leftTableView numberOfRowsInSection:0] > 5) ? (5 * leftTableView.rowHeight) : ([leftTableView numberOfRowsInSection:0] * leftTableView.rowHeight);
-
+            leftTableViewHeight = ([leftTableView numberOfRowsInSection:0] > 8) ? (8 * leftTableView.rowHeight) : ([leftTableView numberOfRowsInSection:0] * leftTableView.rowHeight);
         }
         
         if (rightTableView) {
             
-            rightTableView.frame = CGRectMake(_origin.x+leftTableView.frame.size.width, self.frame.origin.y + self.frame.size.height, self.frame.size.width*(1-ratio), 0);
-            
-            [self.superview addSubview:rightTableView];
-            
-            rightTableViewHeight = ([rightTableView numberOfRowsInSection:0] > 5) ? (5 * rightTableView.rowHeight) : ([rightTableView numberOfRowsInSection:0] * rightTableView.rowHeight);
+           rightTableViewHeight = ([rightTableView numberOfRowsInSection:0] > 8) ? (8 * rightTableView.rowHeight) : ([rightTableView numberOfRowsInSection:0] * rightTableView.rowHeight);
         }
         
         CGFloat tableViewHeight = MAX(leftTableViewHeight, rightTableViewHeight);
         
-        [UIView animateWithDuration:0.2 animations:^{
-            if (leftTableView) {
-                leftTableView.frame = CGRectMake(_origin.x, self.frame.origin.y + self.frame.size.height, self.frame.size.width*ratio, tableViewHeight);
-            }
-            if (rightTableView) {
-                rightTableView.frame = CGRectMake(_origin.x+leftTableView.frame.size.width, self.frame.origin.y + self.frame.size.height, self.frame.size.width*(1-ratio), tableViewHeight);
-            }
-        }];
+        if (leftTableView) {
+            
+            CGRect leftFrame = leftTableView.frame;
+            
+            leftTableViewY -= tableViewHeight;
+            leftFrame.origin.x = selfFrame.origin.x;
+            leftFrame.origin.y = leftTableViewY;
+            leftFrame.size.height = tableViewHeight;
+            leftFrame.size.width = self.frame.size.width * ratio;
+            
+            leftTableView.frame = leftFrame;
+            [self.superview addSubview:leftTableView];
+        }
+        
+        if (rightTableView) {
+            
+            CGRect rightFrame = rightTableView.frame;
+            
+            rightTableViewY -= tableViewHeight;
+            rightFrame.origin.x = selfFrame.origin.x + leftTableView.frame.size.width;
+            rightFrame.origin.y = rightTableViewY;
+            rightFrame.size.height = tableViewHeight;
+            rightFrame.size.width = self.frame.size.width * ( 1- ratio);
+
+            rightTableView.frame = rightFrame;
+            [self.superview addSubview:rightTableView];
+        }
+        
+        // top shadow
+        CGRect topShadowRect = _topShadow.frame;
+        topShadowRect.origin.y = self.frame.origin.y - tableViewHeight - topShadowRect.size.height;
+        _topShadow.frame = topShadowRect;
+        [self.superview addSubview:_topShadow];
+        
+        
     } else {
-        [UIView animateWithDuration:0.2 animations:^{
-            
-            if (leftTableView) {
-                leftTableView.frame = CGRectMake(_origin.x, self.frame.origin.y + self.frame.size.height, self.frame.size.width*ratio, 0);
-            }
-            if (rightTableView) {
-                rightTableView.frame = CGRectMake(_origin.x+leftTableView.frame.size.width, self.frame.origin.y + self.frame.size.height, self.frame.size.width*(1-ratio), 0);
-            }
-            
-        } completion:^(BOOL finished) {
-            
-            if (leftTableView) {
-                [leftTableView removeFromSuperview];
-            }
-            if (rightTableView) {
-                [rightTableView removeFromSuperview];
-            }
-        }];
+        if (leftTableView) {
+            [leftTableView removeFromSuperview];
+        }
+        if (rightTableView) {
+            [rightTableView removeFromSuperview];
+        }
+        
+        [_topShadow removeFromSuperview];
+
+    }
+    if ([_delegate respondsToSelector:@selector(menu:didShowMenu:)]) {
+        [_delegate menu:self didShowMenu:show];
     }
     complete();
+}
+
+- (void)animateViewHeight:(UIView*)animateView withAnimationType:(NSString*)animType {
+    CATransition *animation = [CATransition animation];
+    [animation setType:kCATransitionPush];
+    [animation setSubtype:animType];
+    [animation setDuration:0.5];
+    
+    [animation setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]];
+    [[animateView layer] addAnimation:animation forKey:kCATransition];
+    animateView.hidden = !animateView.hidden;
+    
 }
 
 /**
@@ -672,30 +738,24 @@
         CGFloat collectionViewHeight = 0;
         
         if (collectionView) {
+            collectionViewHeight = ([collectionView numberOfItemsInSection:0] > 10) ? (5 * 38) : (ceil([collectionView numberOfItemsInSection:0]/2) * 38);
             
-            collectionView.frame = CGRectMake(_origin.x, self.frame.origin.y + self.frame.size.height, self.frame.size.width, 0);
+            collectionView.frame = CGRectMake(self.frame.origin.x, self.frame.origin.y - collectionViewHeight, self.frame.size.width, collectionViewHeight);
             [self.superview addSubview:collectionView];
-            
-            collectionViewHeight = ([collectionView numberOfItemsInSection:0] > 10) ? (5 * 38) : (ceil([collectionView numberOfItemsInSection:0]/2.0) * 38);
         }
         
-        [UIView animateWithDuration:0.2 animations:^{
-            if (collectionView) {
-                collectionView.frame = CGRectMake(_origin.x, self.frame.origin.y + self.frame.size.height, self.frame.size.width, collectionViewHeight);
-            }
-        }];
+        // top shadow
+        CGRect topShadowRect = _topShadow.frame;
+        topShadowRect.origin.y = self.frame.origin.y - collectionViewHeight - topShadowRect.size.height;
+        _topShadow.frame = topShadowRect;
+        [self.superview addSubview:_topShadow];
+        
     } else {
-        [UIView animateWithDuration:0.2 animations:^{
-            
-            if (collectionView) {
-                collectionView.frame = CGRectMake(_origin.x, self.frame.origin.y + self.frame.size.height, self.frame.size.width, 0);
-            }
-        } completion:^(BOOL finished) {
-            
-            if (collectionView) {
-                [collectionView removeFromSuperview];
-            }
-        }];
+        [collectionView removeFromSuperview];
+        [_topShadow removeFromSuperview];
+    }
+    if ([_delegate respondsToSelector:@selector(menu:didShowMenu:)]) {
+        [_delegate menu:self didShowMenu:show];
     }
     complete();
 }
@@ -739,7 +799,7 @@
 
 #pragma mark - table datasource
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    // 0 左边   1 右边
+    
     NSInteger leftOrRight = 0;
     if (_rightTableView==tableView) {
         leftOrRight = 1;
@@ -774,7 +834,7 @@
     UILabel *titleLabel = [[UILabel alloc] init];
     titleLabel.textColor = self.textColor;
     titleLabel.tag = 1;
-    titleLabel.font = [UIFont systemFontOfSize:14.0];
+    titleLabel.font = [UIFont systemFontOfSize:12.0];
         
     [cell addSubview:titleLabel];
     
@@ -794,13 +854,9 @@
         
         titleLabel.text = [self.dataSource menu:self titleForRowAtIndexPath:[JSIndexPath indexPathWithCol:self.currentSelectedMenudIndex leftOrRight:leftOrRight leftRow:_leftSelectedRow row:indexPath.row]];
         // 只取宽度
-        textSize = [titleLabel.text textSizeWithFont:[UIFont systemFontOfSize:14.0f] constrainedToSize:CGSizeMake(MAXFLOAT, 14) lineBreakMode:NSLineBreakByWordWrapping];
+        textSize = [titleLabel.text textSizeWithFont:[UIFont systemFontOfSize:12.0f] constrainedToSize:CGSizeMake(MAXFLOAT, 14) lineBreakMode:NSLineBreakByWordWrapping];
         
     }
-    
-    cell.backgroundColor = [UIColor whiteColor];
-    cell.textLabel.font = [UIFont systemFontOfSize:14.0];
-    cell.separatorInset = UIEdgeInsetsZero;
     
     
     if (leftOrRight == 1) {
@@ -882,6 +938,21 @@
         
     } else {
         //TODO: delegate is nil
+    }
+}
+
+// 解决tableview分割线不顶格问题
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+    if ([cell respondsToSelector:@selector(setSeparatorInset:)]) {
+        [cell setSeparatorInset:UIEdgeInsetsZero];
+    }
+    
+    if ([cell respondsToSelector:@selector(setPreservesSuperviewLayoutMargins:)]) {
+        [cell setPreservesSuperviewLayoutMargins:NO];
+    }
+    
+    if ([cell respondsToSelector:@selector(setLayoutMargins:)]) {
+        [cell setLayoutMargins:UIEdgeInsetsZero];
     }
 }
 
