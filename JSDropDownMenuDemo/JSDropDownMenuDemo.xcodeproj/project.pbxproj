@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		836CBA231ACEC8F6003FADBE /* TableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 836CBA221ACEC8F6003FADBE /* TableViewController.m */; };
 		D0EED8831A63CBC700EE7AFD /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D0EED8821A63CBC700EE7AFD /* main.m */; };
 		D0EED8861A63CBC700EE7AFD /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D0EED8851A63CBC700EE7AFD /* AppDelegate.m */; };
 		D0EED8891A63CBC700EE7AFD /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D0EED8881A63CBC700EE7AFD /* ViewController.m */; };
@@ -29,6 +30,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		836CBA211ACEC8F6003FADBE /* TableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TableViewController.h; sourceTree = "<group>"; };
+		836CBA221ACEC8F6003FADBE /* TableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TableViewController.m; sourceTree = "<group>"; };
 		D0EED87D1A63CBC700EE7AFD /* JSDropDownMenuDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JSDropDownMenuDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D0EED8811A63CBC700EE7AFD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D0EED8821A63CBC700EE7AFD /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -95,6 +98,8 @@
 				D0EED88D1A63CBC700EE7AFD /* Images.xcassets */,
 				D0EED88F1A63CBC700EE7AFD /* LaunchScreen.xib */,
 				D0EED8801A63CBC700EE7AFD /* Supporting Files */,
+				836CBA211ACEC8F6003FADBE /* TableViewController.h */,
+				836CBA221ACEC8F6003FADBE /* TableViewController.m */,
 			);
 			path = JSDropDownMenuDemo;
 			sourceTree = "<group>";
@@ -240,6 +245,7 @@
 				D0EED8891A63CBC700EE7AFD /* ViewController.m in Sources */,
 				D0EED8861A63CBC700EE7AFD /* AppDelegate.m in Sources */,
 				D0EED8A91A63CCB300EE7AFD /* JSDropDownMenu.m in Sources */,
+				836CBA231ACEC8F6003FADBE /* TableViewController.m in Sources */,
 				D0EED8831A63CBC700EE7AFD /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -431,6 +437,7 @@
 				D0EED8A21A63CBC700EE7AFD /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		D0EED8A31A63CBC700EE7AFD /* Build configuration list for PBXNativeTarget "JSDropDownMenuDemoTests" */ = {
 			isa = XCConfigurationList;
@@ -439,6 +446,7 @@
 				D0EED8A51A63CBC700EE7AFD /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

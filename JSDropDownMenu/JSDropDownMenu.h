@@ -13,13 +13,9 @@
 @interface JSIndexPath : NSObject
 
 @property (nonatomic, assign) NSInteger column;
-// 0 左边   1 右边
 @property (nonatomic, assign) NSInteger leftOrRight;
-// 左边行
 @property (nonatomic, assign) NSInteger leftRow;
-// 右边行
 @property (nonatomic, assign) NSInteger row;
-
 - (instancetype)initWithColumn:(NSInteger)column leftOrRight:(NSInteger)leftOrRight leftRow:(NSInteger)leftRow row:(NSInteger)row;
 + (instancetype)indexPathWithCol:(NSInteger)col leftOrRight:(NSInteger)leftOrRight leftRow:(NSInteger)leftRow row:(NSInteger)row;
 
@@ -63,6 +59,9 @@
 @protocol JSDropDownMenuDelegate <NSObject>
 @optional
 - (void)menu:(JSDropDownMenu *)menu didSelectRowAtIndexPath:(JSIndexPath *)indexPath;
+
+// 在菜单显示或隐藏时调用 (PS . 隐藏指再次点击相同menu时的隐藏，menu切换时不会触发隐藏，只会有是显示事件
+- (void)menu:(JSDropDownMenu *)menu didShowMenu:(BOOL)show;
 @end
 
 #pragma mark - interface

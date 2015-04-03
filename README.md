@@ -1,8 +1,6 @@
 # JSDropDownMenu
-类似美团的下拉菜单
+修改为上拉菜单
 
-![image](https://github.com/jsfu/JSDropDownMenu/raw/master/ScreenShots/2015.1.19.5.31.29.png)
+![image](https://raw.githubusercontent.com/heqichang/JSDropDownMenu/master/ScreenShots/2015-4-3%209.26.58%20pm.png)
 
-![image](https://github.com/jsfu/JSDropDownMenu/raw/master/ScreenShots/2015.1.27.2.00.03.png)
-
-![image](https://github.com/jsfu/JSDropDownMenu/raw/master/ScreenShots/2015.1.27.2.00.06.png)
+![image](https://raw.githubusercontent.com/heqichang/JSDropDownMenu/master/ScreenShots/2015-4-3%209.27.09%20pm.png)
