@@ -32,13 +32,13 @@
     // Do any additional setup after loading the view, typically from a nib.
     
     // 指定默认选中
-    _currentData1Index = 1;
+    _currentData1Index = 0;
     _currentData1SelectedIndex = 1;
     
-    NSArray *food = @[@"全部美食", @"火锅", @"川菜", @"西餐", @"自助餐"];
+    NSArray *food = @[@"全部", @"火锅", @"川菜", @"西餐", @"自助餐"];
     NSArray *travel = @[@"全部旅游", @"周边游", @"景点门票", @"国内游", @"境外游"];
     
-    _data1 = [NSMutableArray arrayWithObjects:@{@"title":@"美食", @"data":food}, @{@"title":@"旅游", @"data":travel}, nil];
+    _data1 = [NSMutableArray arrayWithObjects:@{@"title":@"全部类型", @"data":@[]},@{@"title":@"美食", @"data":food}, @{@"title":@"旅游", @"data":travel}, nil];
     _data2 = [NSMutableArray arrayWithObjects:@"智能排序", @"离我最近", @"评价最高", @"最新发布", @"人气最高", @"价格最低", @"价格最高", nil];
     _data3 = [NSMutableArray arrayWithObjects:@"不限人数", @"单人餐", @"双人餐", @"3~4人餐", nil];
     
@@ -125,7 +125,7 @@
 - (NSString *)menu:(JSDropDownMenu *)menu titleForColumn:(NSInteger)column{
     
     switch (column) {
-        case 0: return [[_data1[_currentData1Index] objectForKey:@"data"] objectAtIndex:_currentData1SelectedIndex];
+        case 0: return [_data1[_currentData1Index] objectForKey:@"title"];
             break;
         case 1: return _data2[_currentData2Index];
             break;

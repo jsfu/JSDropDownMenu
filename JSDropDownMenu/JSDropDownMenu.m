@@ -865,7 +865,12 @@
         BOOL haveRightTableView = [_dataSource haveRightTableViewInColumn:_currentSelectedMenudIndex];
         
         if ((leftOrRight==0 && !haveRightTableView) || leftOrRight==1) {
-            [self confiMenuWithSelectRow:indexPath.row leftOrRight:leftOrRight];
+            if (indexPath.row == 0) {
+                // 如果选中右侧tableview的第一项（比如：全部），则返回左侧tableview的选中
+                [self confiMenuWithSelectRow:_leftSelectedRow leftOrRight:0];
+            } else {
+                [self confiMenuWithSelectRow:indexPath.row leftOrRight:leftOrRight];
+            }
         }
         
         [self.delegate menu:self didSelectRowAtIndexPath:[JSIndexPath indexPathWithCol:self.currentSelectedMenudIndex leftOrRight:leftOrRight leftRow:_leftSelectedRow row:indexPath.row]];
@@ -877,6 +882,12 @@
                 NSIndexPath *selectedIndexPath = [NSIndexPath indexPathForRow:_leftSelectedRow inSection:0];
                 
                 [_leftTableView selectRowAtIndexPath:selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
+            }
+            
+            // 如果右边tableview没有数据则直接返回左侧tableview的选中
+            NSInteger rightDataCount = [self.dataSource menu:self numberOfRowsInColumn:self.currentSelectedMenudIndex leftOrRight:1 leftRow:_leftSelectedRow];
+            if (rightDataCount < 1) {
+                [self confiMenuWithSelectRow:indexPath.row leftOrRight:leftOrRight];
             }
             
             [_rightTableView reloadData];
